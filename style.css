@@ -1,0 +1,234 @@
+/* ---------- Basic reset and variables ---------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #15325e;
+  --card: #ee8e8e;
+  --text: #1f2a44;
+  --muted: #cdd3e0;
+  --primary: #3d5afe;
+  --primary-dark: #2a41d6;
+  --danger: #e5484d;
+  --done: #2e9e6b;
+  --border: #163442;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  background: linear-gradient(160deg, #dfe8f7, #f3e9f7);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px 16px;
+  color: var(--text);
+}
+
+/* ---------- Main card ---------- */
+.app {
+  background: var(--card);
+  width: 100%;
+  max-width: 480px;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(40, 60, 120, 0.15);
+  animation: cardIn 0.6s ease;   /* plays once when the page loads */
+}
+
+h1 {
+  font-size: 1.7rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 4px 0 20px;
+  font-size: 0.95rem;
+}
+
+/* ---------- Input + Add button ---------- */
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+#taskInput {
+  flex: 1;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#taskInput:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(61, 90, 254, 0.15);
+}
+
+/* Added by JS when input is empty - makes the box shake */
+#taskInput.shake {
+  border-color: var(--danger);
+  animation: shake 0.4s;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  transition: transform 0.15s, background 0.2s;
+}
+
+button:active {
+  transform: scale(0.94);
+}
+
+#addBtn {
+  background: var(--primary);
+  color: white;
+  padding: 0 20px;
+  font-weight: 600;
+}
+
+#addBtn:hover {
+  background: var(--primary-dark);
+}
+
+/* ---------- Validation message ---------- */
+.error {
+  color: var(--danger);
+  font-size: 0.9rem;
+  min-height: 22px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.error.show {
+  opacity: 1;
+}
+
+/* ---------- Task list ---------- */
+#taskList {
+  list-style: none;
+  margin-top: 6px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  background: #f6f8fd;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.task:hover {
+  transform: translateX(4px);
+}
+
+/* Only new tasks get this animation */
+.task.new {
+  animation: slideIn 0.4s ease;
+}
+
+/* Added just before a task is deleted */
+.task.removing {
+  animation: slideOut 0.35s ease forwards;
+}
+
+.task input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--done);
+  cursor: pointer;
+}
+
+.task-text {
+  flex: 1;
+  word-break: break-word;
+  transition: color 0.3s;
+}
+
+/* Completed style */
+.task.completed {
+  background: #eef8f3;
+}
+
+.task.completed .task-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.delete-btn {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 6px 12px;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* ---------- Empty message + Clear All ---------- */
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 20px 0;
+}
+
+.clear-btn {
+  display: block;
+  margin: 10px auto 0;
+  background: #475e92;
+  color: white;
+  padding: 10px 22px;
+}
+
+.clear-btn:hover {
+  background: #354264;
+}
+
+/* JS adds this class to hide things */
+.hidden {
+  display: none;
+}
+
+/* ---------- Animations ---------- */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideOut {
+  to { opacity: 0; transform: translateX(60px); height: 0; padding: 0; margin: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+
+/* For people who turn off animations in their system settings */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
